@@ -1,8 +1,6 @@
-import express, { Application } from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import routes from '../routes';
+import { Application } from 'express';
 import expressLoader from './express-loader';
+import mongoLoader from './mongo-loader';
 
 type IniParemeters = {
   expressApp: Application;
@@ -10,4 +8,5 @@ type IniParemeters = {
 
 export default async ({ expressApp: app }: IniParemeters) => {
   await expressLoader({ app });
+  await mongoLoader();
 };
