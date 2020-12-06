@@ -1,8 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
+import { Joi, schema } from 'express-validation';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { injectable } from 'tsyringe';
 import config from '../config';
+
+export const loginValidation = {
+  body: Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(4).max(32).required(),
+  }),
+} as schema;
 
 @injectable()
 export class AuthController {

@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import { validate } from 'express-validation';
 import passport from 'passport';
 import { injectable } from 'tsyringe';
-import { AuthController } from '../controllers/AuthController';
+import { AuthController, loginValidation } from '../controllers/AuthController';
 
 @injectable()
 export class AuthRoutes {
@@ -10,7 +11,11 @@ export class AuthRoutes {
   public routes() {
     const router: Router = Router();
 
-    router.post('/login', this.authController.login);
+    router.post(
+      '/login',
+      validate(loginValidation, {}, {}),
+      this.authController.login,
+    );
     router.get(
       '/',
       passport.authenticate('jwt', { session: false }),
