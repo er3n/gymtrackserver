@@ -9,8 +9,7 @@ export class UserRoutes {
   public routes() {
     const router: Router = Router();
 
-    router.post('/', this.userController.createUser);
-    router.get('/:id', this.userController.getUser);
+    router.post('/signup', this.userController.signUp);
 
     return router;
   }

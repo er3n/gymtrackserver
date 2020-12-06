@@ -1,4 +1,5 @@
 import { Document, model, Schema } from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const UserSchema = new Schema({
   firstName: {
@@ -23,10 +24,22 @@ const UserSchema = new Schema({
 });
 
 export interface IUser extends Document {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  isValidPassword(password: string): Promise<boolean>;
 }
+
+UserSchema.pre<IUser>('save', async function (next) {
+  const hash = await bcrypt.hash(this.password, 10);
+  this.password = hash;
+  next();
+});
+
+UserSchema.methods.isValidPassword = async function (password: string) {
+  const compare = await bcrypt.compare(password, this.password);
+  return compare;
+};
 
 export default model<IUser>('user', UserSchema);
