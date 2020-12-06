@@ -16,4 +16,37 @@ describe('GET / - a simple api endpoint', () => {
         if (err) throw err;
       });
   });
+
+  it('echo test2', async () => {
+    request(testSetup.app)
+      .get('/user')
+      .expect('Content-Type', /json/)
+      .expect('Content-Length', '15')
+      .expect(200)
+      .end(function (err, res) {
+        if (err) throw err;
+      });
+  });
+
+  it('echo test3', async () => {
+    request(testSetup.app)
+      .get('/user')
+      .expect('Content-Type', /json/)
+      .expect('Content-Length', '15')
+      .expect(200)
+      .end(function (err, res) {
+        if (err) throw err;
+      });
+  });
+
+  it('echo test4', async () => {
+    request(testSetup.app)
+      .get('/user')
+      .expect('Content-Type', /json/)
+      .expect('Content-Length', '15')
+      .expect(200)
+      .end(function (err, res) {
+        if (err) throw err;
+      });
+  });
 });

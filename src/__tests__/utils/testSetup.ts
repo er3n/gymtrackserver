@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 class TestSetup {
   public mongod?: MongoMemoryServer;
   public app?: Application;
+  public server?: Server;
 
   public beforeAll = async (): Promise<void> => {
     this.mongod = await MongoMemoryServer.create({
@@ -18,13 +19,12 @@ class TestSetup {
         port: 59332,
       },
     });
-    this.app = await container.resolve(Server).initialize();
-    console.log('bom');
+    this.server = container.resolve(Server);
+    this.app = await this.server.initialize();
   };
 
   public afterAll = async (): Promise<void> => {
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
+    // await this.server?.close();
     await this.mongod?.stop();
   };
 
