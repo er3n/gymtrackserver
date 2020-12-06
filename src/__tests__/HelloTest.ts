@@ -1,31 +1,13 @@
-import { container } from 'tsyringe';
-import Server from '../Server';
 import request from 'supertest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import DBHanler from './utils/DBHandler';
-
-const dbHandler = new DBHanler();
+import testSetup from './utils/testSetup';
 
 describe('GET / - a simple api endpoint', () => {
-  beforeAll(async () => await dbHandler.startInMemoryDb());
+  beforeAll(async () => await testSetup.beforeAll());
+  afterAll(async () => await testSetup.afterAll());
+  afterEach(async () => await testSetup.afterEach());
 
-  afterAll(async () => await dbHandler.stopInMemoryDb());
-
-  it('Hello API Request', async () => {
-    const mongod = await MongoMemoryServer.create({
-      autoStart: true,
-      instance: {
-        dbName: 'gymtracktest',
-        ip: '127.0.0.1',
-        port: 59332,
-      },
-    });
-
-    const server = container.resolve(Server);
-
-    const app = await server.initialize();
-
-    request(app)
+  it('echo test', async () => {
+    request(testSetup.app)
       .get('/user')
       .expect('Content-Type', /json/)
       .expect('Content-Length', '15')
@@ -33,9 +15,5 @@ describe('GET / - a simple api endpoint', () => {
       .end(function (err, res) {
         if (err) throw err;
       });
-
-    await server.close();
-
-    await mongod.stop();
   });
 });
