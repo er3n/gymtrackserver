@@ -1,10 +1,10 @@
 import { injectable } from 'tsyringe';
 import config from '../config';
-import mongoose from 'mongoose';
+import mongoose, { Connection } from 'mongoose';
 
 @injectable()
 class MongoLoader {
-  constructor() {}
+  private connection?: Connection;
 
   public async load() {
     const isProduction = config.enviroment === 'production';
@@ -39,6 +39,13 @@ class MongoLoader {
       useUnifiedTopology: true,
       keepAlive: true,
     });
+
+    this.connection = connection;
+  }
+
+  public async close() {
+    await this.connection?.close();
+    console.log('Mongo Connection Closed');
   }
 }
 
