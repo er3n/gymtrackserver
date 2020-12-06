@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
 
-let path = '.env.dev';
-if (process.env.NODE_ENV) {
-  path = `.env.${process.env.NODE_ENV}`;
+const isDev = process.env.NODE_ENV == 'dev';
+
+let path = `.env.${process.env.NODE_ENV}`;
+if (isDev) {
+  path = '.env.dev';
 }
 
 dotenv.config({ path });
@@ -13,6 +15,7 @@ if (!jwtSecret) {
 }
 
 export default {
+  isDev,
   port: process.env.PORT,
   enviroment: process.env.NODE_ENV,
   mongodb_uri: process.env.MONGODB_URI,

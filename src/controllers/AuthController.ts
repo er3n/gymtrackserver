@@ -13,11 +13,8 @@ export class AuthController {
   ): Promise<void> => {
     passport.authenticate('login', async (err, user, info) => {
       try {
-        if (err || !user) {
-          console.log(info);
-          const error = new Error(info?.message || 'An error occurred.');
-
-          return next(error);
+        if (err) {
+          return next(err);
         }
 
         req.login(user, { session: false }, async (error) => {

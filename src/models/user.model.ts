@@ -34,7 +34,7 @@ export interface IUser extends Document {
 UserSchema.pre<IUser>('save', async function (next) {
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
-  next();
+  next(null);
 });
 
 UserSchema.methods.isValidPassword = async function (password: string) {

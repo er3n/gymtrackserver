@@ -1,6 +1,7 @@
 import { injectable } from 'tsyringe';
 import bcrypt from 'bcryptjs';
 import UserModel from '../models/user.model';
+import { APIError, HttpStatusCode } from '../errors/BaseError';
 
 export class InvalidUsernameOrPassword extends Error {
   constructor(message?: string) {
@@ -18,13 +19,13 @@ export class AuthService {
     }).exec();
 
     if (!user) {
-      throw new InvalidUsernameOrPassword('Invalid username!');
+      throw new APIError('InvalidUsername', HttpStatusCode.BAD_REQUEST);
     }
 
     const validate = await user.isValidPassword(password);
 
     if (!validate) {
-      throw new InvalidUsernameOrPassword('Invalid password!');
+      throw new APIError('InvalidPassword', HttpStatusCode.BAD_REQUEST);
     }
 
     return {

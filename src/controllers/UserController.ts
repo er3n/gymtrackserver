@@ -25,14 +25,9 @@ export class UserController {
 
     try {
       await this.userService.createUser(newUser);
+      res.sendStatus(201);
     } catch (err) {
-      if (err instanceof UsernameAlreadyExistsError) {
-        res.sendStatus(409);
-      } else {
-        next(err);
-      }
+      next(err);
     }
-
-    res.sendStatus(201);
   };
 }

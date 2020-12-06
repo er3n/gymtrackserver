@@ -19,17 +19,11 @@ class AuthLoader {
           session: false,
         },
         async (username, password, done) => {
-          console.log('asd');
           try {
-            console.log(username);
             const user = await this.authService.login(username, password);
             return done(null, user, { message: 'Logged in Successfully' });
           } catch (error: any) {
-            if (error instanceof InvalidUsernameOrPassword) {
-              done(null, false, { message: error.message });
-            } else {
-              done(error);
-            }
+            done(error);
           }
         },
       ),
