@@ -24,7 +24,7 @@ class TestSetup {
   };
 
   public afterAll = async (): Promise<void> => {
-    // await this.server?.close();
+    await this.server?.close();
     await this.mongod?.stop();
   };
 
