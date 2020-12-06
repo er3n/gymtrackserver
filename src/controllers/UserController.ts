@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import { injectable } from 'tsyringe';
-import {
-  UsernameAlreadyExistsError,
-  UserService,
-} from '../service/UserService';
+import { UserService } from '../service/UserService';
+import { NewUserType } from '../types/UserTypes';
+import { Joi } from 'express-validation';
 
-type NewUserType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+export const signUpValidation = {
+  body: Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(4).max(32).required(),
+    firstName: Joi.string().required().max(32),
+    lastName: Joi.string().required().max(32),
+  }),
 };
 
 @injectable()

@@ -1,6 +1,10 @@
 import { Router } from 'express';
+import { validate } from 'express-validation';
 import { injectable } from 'tsyringe';
-import { UserController } from '../controllers/UserController';
+import {
+  signUpValidation,
+  UserController,
+} from '../controllers/UserController';
 
 @injectable()
 export class UserRoutes {
@@ -9,7 +13,11 @@ export class UserRoutes {
   public routes() {
     const router: Router = Router();
 
-    router.post('/signup', this.userController.signUp);
+    router.post(
+      '/signup',
+      validate(signUpValidation, {}, {}),
+      this.userController.signUp,
+    );
 
     return router;
   }
